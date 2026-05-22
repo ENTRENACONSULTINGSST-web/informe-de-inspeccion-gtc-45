@@ -1,0 +1,6 @@
+{
+  "name": "Portal SST GTC 45",
+  "description": "Portal de inspección y registro de hallazgos SST basados en la guía colombiana GTC 45 con asistente IA integrado y exportación a Excel.",
+  "requestFramePermissions": ["camera"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
