@@ -1,16 +1,15 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
+﻿import { defineConfig } from "vite"
+import react from "@vitejs/plugin-react"
 
-// https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
-  base: '/informe-de-inspeccion-gtc-45/',
+  base: "/informe-de-inspeccion-gtc-45/",
   css: {
-    postcss: './postcss.config.cjs',
+    postcss: "./postcss.config.cjs",
   },
   resolve: {
     alias: {
-      '@': '/src',
+      "@": "/src",
     },
   },
 })
