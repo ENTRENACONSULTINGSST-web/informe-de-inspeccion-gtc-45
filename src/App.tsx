@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+﻿import React, { useState, useEffect, useRef } from 'react';
 import { 
   Plus, 
   Trash2, 
@@ -40,8 +40,8 @@ interface Finding {
   technicalObservation: string;
   
   // Danger Classification GTC 45
-  riskFactor: string; // e.g. Biomecánico, Condiciones de Seguridad, Físico, etc.
-  riskDetail: string;  // e.g. Posturas forzadas, Eléctrico, Ruido, etc.
+  riskFactor: string; // e.g. BiomecÃ¡nico, Condiciones de Seguridad, FÃ­sico, etc.
+  riskDetail: string;  // e.g. Posturas forzadas, ElÃ©ctrico, Ruido, etc.
   description: string; // AI generated or self-edited detail
   
   // GTC 45 Matrices Math
@@ -52,14 +52,14 @@ interface Finding {
   consequenceLevel: number; // NC (10, 25, 60, 100)
   riskLevelValue: number;   // NR = NP * NC
   riskTier: string;        // I, II, III, IV
-  riskAcceptability: string; // Inaceptable, Aceptable con control específico, Aceptable, etc.
+  riskAcceptability: string; // Inaceptable, Aceptable con control especÃ­fico, Aceptable, etc.
   
   // Controls & Intervention Measures
   elimination?: string;
   substitution?: string;
   engineeringControls?: string;
   administrativeControls?: string;
-  eppControls?: string; // Equipos de Protección Personal
+  eppControls?: string; // Equipos de ProtecciÃ³n Personal
   
   actionPlan: string;
   status: 'Abierto' | 'En Proceso' | 'Cerrado';
@@ -67,13 +67,13 @@ interface Finding {
 
 // Danger guide and options configuration based on GTC 45
 const RISK_FACTORS_MAP: Record<string, string[]> = {
-  "Biológico": ["Virus (e.g. Influenza, COVID-19)", "Bacterias", "Hongos", "Rickettsias", "Parásitos", "Picaduras", "Mordeduras", "Fluidos o Excrementos"],
-  "Físico": ["Ruido (continuo, intermitente, de impacto)", "Iluminación (deficiente o de exceso)", "Vibración (cuerpo entero, segmentaria)", "Temperaturas extremas (calor o frío)", "Presión atmosférica (normal o ajustada)", "Radiaciones ionizantes (Rayos X, gama, etc.)", "Radiaciones no ionizantes (Láser, UV, infrarroja, RF)"],
-  "Químico": ["Polvos orgánicos o inorgánicos", "Fibras", "Líquidos (nieblas, rocíos)", "Gases y Vapores", "Humos metálicos, no metálicos", "Material particulado"],
-  "Psicosocial": ["Gestión organizacional (estilo mando, pago, etc.)", "Características del grupo social de trabajo", "Condiciones de la tarea (carga mental, contenido)", "Interfase persona-tarea (conocimientos, tecnología)", "Jornación de trabajo (turnos, rotación, extras)"],
-  "Biomecánico": ["Postura (prolongada, mantenida, forzada, antigravitacional)", "Esfuerzo muscular extremo", "Movimiento repetitivo (miembros superiores)", "Manipulación manual de cargas"],
-  "Condiciones de seguridad": ["Mecánico (máquinas, herramientas, piezas a trabajar)", "Eléctrico (alta y baja tensión, estática)", "Locativo (sistemas y medios de almacenamiento, orden)", "Tecnológico (explosión, fuga, derrame, incendio)", "Accidentes de tránsito", "Públicos (robos, atracos, asaltos, orden público)", "Trabajo en alturas", "Espacios confinados"],
-  "Fenómenos naturales": ["Sismos / Terremotos", "Vendavales", "Inundaciones", "Derrumbes", "Precipitaciones (lluvias, granizadas)"]
+  "BiolÃ³gico": ["Virus (e.g. Influenza, COVID-19)", "Bacterias", "Hongos", "Rickettsias", "ParÃ¡sitos", "Picaduras", "Mordeduras", "Fluidos o Excrementos"],
+  "FÃ­sico": ["Ruido (continuo, intermitente, de impacto)", "IluminaciÃ³n (deficiente o de exceso)", "VibraciÃ³n (cuerpo entero, segmentaria)", "Temperaturas extremas (calor o frÃ­o)", "PresiÃ³n atmosfÃ©rica (normal o ajustada)", "Radiaciones ionizantes (Rayos X, gama, etc.)", "Radiaciones no ionizantes (LÃ¡ser, UV, infrarroja, RF)"],
+  "QuÃ­mico": ["Polvos orgÃ¡nicos o inorgÃ¡nicos", "Fibras", "LÃ­quidos (nieblas, rocÃ­os)", "Gases y Vapores", "Humos metÃ¡licos, no metÃ¡licos", "Material particulado"],
+  "Psicosocial": ["GestiÃ³n organizacional (estilo mando, pago, etc.)", "CaracterÃ­sticas del grupo social de trabajo", "Condiciones de la tarea (carga mental, contenido)", "Interfase persona-tarea (conocimientos, tecnologÃ­a)", "JornaciÃ³n de trabajo (turnos, rotaciÃ³n, extras)"],
+  "BiomecÃ¡nico": ["Postura (prolongada, mantenida, forzada, antigravitacional)", "Esfuerzo muscular extremo", "Movimiento repetitivo (miembros superiores)", "ManipulaciÃ³n manual de cargas"],
+  "Condiciones de seguridad": ["MecÃ¡nico (mÃ¡quinas, herramientas, piezas a trabajar)", "ElÃ©ctrico (alta y baja tensiÃ³n, estÃ¡tica)", "Locativo (sistemas y medios de almacenamiento, orden)", "TecnolÃ³gico (explosiÃ³n, fuga, derrame, incendio)", "Accidentes de trÃ¡nsito", "PÃºblicos (robos, atracos, asaltos, orden pÃºblico)", "Trabajo en alturas", "Espacios confinados"],
+  "FenÃ³menos naturales": ["Sismos / Terremotos", "Vendavales", "Inundaciones", "Derrumbes", "Precipitaciones (lluvias, granizadas)"]
 };
 
 // Initial realistic Colombian SST Inspection data
@@ -82,11 +82,11 @@ const INITIAL_FINDINGS: Finding[] = [
     id: "f-1",
     inspector: "Carlos Mario Restrepo",
     date: "2026-05-10",
-    location: "Almacén Central - Bahía de Cargue",
-    technicalObservation: "Se observa estibamiento deficiente con cajas pesadas en el tercer nivel del estante sin barandilla de contención ni amarre.",
+    location: "AlmacÃ©n Central - BahÃ­a de Cargue",
+    technicalObservation: "Se observa estibamiento deficiente con cajas pesadas en el tercer nivel del estante sin barandilla de contenciÃ³n ni amarre.",
     riskFactor: "Condiciones de seguridad",
     riskDetail: "Locativo (sistemas y medios de almacenamiento, orden)",
-    description: "Almacenamiento de mercancía inestable a más de 3 metros de altura con potencial de caída de objetos pesados sobre personal transitable.",
+    description: "Almacenamiento de mercancÃ­a inestable a mÃ¡s de 3 metros de altura con potencial de caÃ­da de objetos pesados sobre personal transitable.",
     deficiencyLevel: 6,
     exposureLevel: 3,
     probabilityLevel: 18,
@@ -95,21 +95,21 @@ const INITIAL_FINDINGS: Finding[] = [
     riskLevelValue: 1080,
     riskTier: "I",
     riskAcceptability: "Inaceptable",
-    engineeringControls: "Instalar malla de contención y barandillas frontales de contención en racks elevados.",
-    administrativeControls: "Capacitación en técnicas seguras de almacenamiento y demarcación de línea de seguridad en piso.",
+    engineeringControls: "Instalar malla de contenciÃ³n y barandillas frontales de contenciÃ³n en racks elevados.",
+    administrativeControls: "CapacitaciÃ³n en tÃ©cnicas seguras de almacenamiento y demarcaciÃ³n de lÃ­nea de seguridad en piso.",
     eppControls: "Obligatoriedad de uso de casco y calzado de seguridad con punta de acero en la zona.",
-    actionPlan: "Reorganizar estantes de inmediato ubicando cargas más pesadas en niveles inferiores y colocar mallas.",
+    actionPlan: "Reorganizar estantes de inmediato ubicando cargas mÃ¡s pesadas en niveles inferiores y colocar mallas.",
     status: "En Proceso"
   },
   {
     id: "f-2",
-    inspector: "Patricia Gómez",
+    inspector: "Patricia GÃ³mez",
     date: "2026-05-12",
-    location: "Planta de Producción - Línea de Inyección",
-    technicalObservation: "Niveles de ruido medidos de manera cualitativa muy altos en máquina inyectora #4. Los operarios deben gritar para comunicarse a menos de 1 metro.",
-    riskFactor: "Físico",
+    location: "Planta de ProducciÃ³n - LÃ­nea de InyecciÃ³n",
+    technicalObservation: "Niveles de ruido medidos de manera cualitativa muy altos en mÃ¡quina inyectora #4. Los operarios deben gritar para comunicarse a menos de 1 metro.",
+    riskFactor: "FÃ­sico",
     riskDetail: "Ruido (continuo, intermitente, de impacto)",
-    description: "Exposición ocupacional a niveles elevados de presión sonora generados por el motor de inyectora plástica.",
+    description: "ExposiciÃ³n ocupacional a niveles elevados de presiÃ³n sonora generados por el motor de inyectora plÃ¡stica.",
     deficiencyLevel: 6,
     exposureLevel: 4,
     probabilityLevel: 24,
@@ -118,10 +118,10 @@ const INITIAL_FINDINGS: Finding[] = [
     riskLevelValue: 600,
     riskTier: "I",
     riskAcceptability: "Inaceptable",
-    engineeringControls: "Aislamiento acústico de la bomba hidráulica de la inyectora #4 mediante cabina modular.",
-    administrativeControls: "Rotación de turnos del personal y señalización de área de uso obligatorio de protección auditiva.",
-    eppControls: "Suministrar e inspeccionar protectores auditivos de tipo copa con atenuación superior a 25dB.",
-    actionPlan: "Realizar sonometría oficial en el área y suministrar protectores auditivos de doble protección si es necesario.",
+    engineeringControls: "Aislamiento acÃºstico de la bomba hidrÃ¡ulica de la inyectora #4 mediante cabina modular.",
+    administrativeControls: "RotaciÃ³n de turnos del personal y seÃ±alizaciÃ³n de Ã¡rea de uso obligatorio de protecciÃ³n auditiva.",
+    eppControls: "Suministrar e inspeccionar protectores auditivos de tipo copa con atenuaciÃ³n superior a 25dB.",
+    actionPlan: "Realizar sonometrÃ­a oficial en el Ã¡rea y suministrar protectores auditivos de doble protecciÃ³n si es necesario.",
     status: "Abierto"
   },
   {
@@ -130,9 +130,9 @@ const INITIAL_FINDINGS: Finding[] = [
     date: "2026-05-15",
     location: "Oficinas Administrativas - Piso 2",
     technicalObservation: "Personal de call center manifiesta dolores lumbares frecuentes. Sillas de oficina no tienen soporte lumbar ajustable ni apoyabrazos regulables.",
-    riskFactor: "Biomecánico",
+    riskFactor: "BiomecÃ¡nico",
     riskDetail: "Postura (prolongada, mantenida, forzada, antigravitacional)",
-    description: "Posturas estáticas e inadecuadas prolongadas durante la ejecución de tareas de oficina por mobiliario no ergonómico.",
+    description: "Posturas estÃ¡ticas e inadecuadas prolongadas durante la ejecuciÃ³n de tareas de oficina por mobiliario no ergonÃ³mico.",
     deficiencyLevel: 2,
     exposureLevel: 4,
     probabilityLevel: 8,
@@ -141,8 +141,8 @@ const INITIAL_FINDINGS: Finding[] = [
     riskLevelValue: 80,
     riskTier: "III",
     riskAcceptability: "Aceptable",
-    engineeringControls: "Cambio progresivo de silletería convencional a silletería con certificación ergonómica.",
-    administrativeControls: "Implementación estricta de pausas activas programadas cada dos horas guiadas por el líder SST.",
+    engineeringControls: "Cambio progresivo de silleterÃ­a convencional a silleterÃ­a con certificaciÃ³n ergonÃ³mica.",
+    administrativeControls: "ImplementaciÃ³n estricta de pausas activas programadas cada dos horas guiadas por el lÃ­der SST.",
     actionPlan: "Capacitaciones de higiene postural e implementar pausas activas por medio de recordatorios en PC.",
     status: "Cerrado"
   }
@@ -207,7 +207,19 @@ export default function App() {
   // Persist to local storage
   useEffect(() => {
     localStorage.setItem('gtc45_findings', JSON.stringify(findings));
-  }, [findings]);
+  }, [findings]);useEffect(() => {
+  try {
+    const findingsToSave = findings.slice(0, 30);
+    localStorage.setItem('gtc45_findings', JSON.stringify(findingsToSave));
+  } catch (error) {
+    console.error('Error al guardar:', error);
+    if (error instanceof DOMException && error.name === 'QuotaExceededError') {
+      const findingsWithoutImages = findings.map(f => ({ ...f, imageUrl: undefined }));
+      localStorage.setItem('gtc45_findings', JSON.stringify(findingsWithoutImages.slice(0, 30)));
+      alert('Las imágenes se eliminaron por exceder el límite de almacenamiento. Exporta a Excel para respaldo.');
+    }
+  }
+}, [findings]);
 
   // Recalculate GTC 45 values on any input change
   useEffect(() => {
@@ -236,7 +248,7 @@ export default function App() {
       acceptability = 'Inaceptable';
     } else if (nr >= 120 && nr <= 500) {
       tier = 'II';
-      acceptability = 'Inaceptable o Aceptable con control específico';
+      acceptability = 'Inaceptable o Aceptable con control especÃ­fico';
     } else if (nr >= 50 && nr <= 100) {
       tier = 'III';
       acceptability = 'Aceptable';
@@ -320,22 +332,68 @@ export default function App() {
 
   // Delete finding handler
   const handleDeleteClick = (id: string) => {
-    if (confirm('¿Está seguro de que desea eliminar este hallazgo de inspección? Esta acción no se puede deshacer.')) {
+    if (confirm('Â¿EstÃ¡ seguro de que desea eliminar este hallazgo de inspecciÃ³n? Esta acciÃ³n no se puede deshacer.')) {
       setFindings(findings.filter(f => f.id !== id));
     }
   };
 
   // Save finding handler
   const handleSaveFinding = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!location.trim()) {
-      alert('Por favor ingrese la ubicación o área del hallazgo.');
-      return;
-    }
-    if (!technicalObservation.trim()) {
-      alert('Por favor ingrese la observación técnica del inspector.');
-      return;
-    }
+  e.preventDefault();
+  if (!location.trim()) {
+    alert('Por favor ingrese la ubicación o área del hallazgo.');
+    return;
+  }
+  if (!technicalObservation.trim()) {
+    alert('Por favor ingrese la observación técnica del inspector.');
+    return;
+  }
+
+  // Validar límite de 30 hallazgos
+  if (!editingFinding && findings.length >= 30) {
+    alert('Has alcanzado el límite máximo de 30 hallazgos. Elimina algunos para agregar nuevos.');
+    return;
+  }
+
+  const findingData: Finding = {
+    id: editingFinding ? editingFinding.id : `f-${Date.now()}`,
+    inspector: inspector || 'Inspector SST',
+    date: date || new Date().toISOString().split('T')[0],
+    location,
+    imageUrl: imageUrl || undefined,
+    technicalObservation,
+    riskFactor,
+    riskDetail,
+    description: description || technicalObservation,
+    deficiencyLevel,
+    exposureLevel,
+    probabilityLevel: calculatedProb,
+    probabilityLabel: calculatedProbLabel,
+    consequenceLevel,
+    riskLevelValue: calculatedRisk,
+    riskTier: calculatedTier,
+    riskAcceptability: calculatedAcceptability,
+    elimination,
+    substitution,
+    engineeringControls,
+    administrativeControls,
+    eppControls,
+    actionPlan: actionPlan || 'Realizar inspección periódica y aplicar controles.',
+    status
+  };
+
+  if (editingFinding) {
+    setFindings(findings.map(f => f.id === editingFinding.id ? findingData : f));
+  } else {
+    setFindings([findingData, ...findings]);
+    confetti({
+      particleCount: 80,
+      spread: 60,
+      origin: { y: 0.85 }
+    });
+  }
+
+  setIsFormOpen(false);
 
     const findingData: Finding = {
       id: editingFinding ? editingFinding.id : `f-${Date.now()}`,
@@ -360,7 +418,7 @@ export default function App() {
       engineeringControls,
       administrativeControls,
       eppControls,
-      actionPlan: actionPlan || 'Realizar inspección periódica y aplicar controles.',
+      actionPlan: actionPlan || 'Realizar inspecciÃ³n periÃ³dica y aplicar controles.',
       status
     };
 
@@ -379,37 +437,37 @@ export default function App() {
   };
 
   // Build raw GTC 45 Prompt for copying
-  const generatedAIPrompt = `Analiza esta evidencia según GTC 45 (Guía Técnica Colombiana para la valoración de riesgos de Seguridad y Salud en el Trabajo).
+  const generatedAIPrompt = `Analiza esta evidencia segÃºn GTC 45 (GuÃ­a TÃ©cnica Colombiana para la valoraciÃ³n de riesgos de Seguridad y Salud en el Trabajo).
 
-Observación Técnica del Inspector:
-"${technicalObservation || 'Viga en mal estado, cables expuestos sin entubar o herramientas inseguras en área laboral.'}"
+ObservaciÃ³n TÃ©cnica del Inspector:
+"${technicalObservation || 'Viga en mal estado, cables expuestos sin entubar o herramientas inseguras en Ã¡rea laboral.'}"
 
-Ubicación del Hallazgo:
-"${location || 'Planta de producción o bodega principal'}"
+UbicaciÃ³n del Hallazgo:
+"${location || 'Planta de producciÃ³n o bodega principal'}"
 
-Por favor, categoriza minuciosamente el peligro basándote en la GTC 45. Asegúrate de clasificarlo exactamente en uno de los siguientes factores de riesgo básicos colombianos:
-- Biológico
-- Físico
-- Químico
+Por favor, categoriza minuciosamente el peligro basÃ¡ndote en la GTC 45. AsegÃºrate de clasificarlo exactamente en uno de los siguientes factores de riesgo bÃ¡sicos colombianos:
+- BiolÃ³gico
+- FÃ­sico
+- QuÃ­mico
 - Psicosocial
-- Biomecánico
+- BiomecÃ¡nico
 - Condiciones de seguridad
-- Fenómenos naturales
+- FenÃ³menos naturales
 
-Genera un formato de respuesta únicamente como un objeto JSON crudo en español. No agregues introducciones ni explicaciones de Markdown externas al JSON. La estructura obligatoria de salida es:
+Genera un formato de respuesta Ãºnicamente como un objeto JSON crudo en espaÃ±ol. No agregues introducciones ni explicaciones de Markdown externas al JSON. La estructura obligatoria de salida es:
 {
   "riskFactor": "Factor de riesgo determinado",
-  "riskDetail": "Detalle del riesgo específico según la GTC 45",
-  "description": "Explicación profesional extendida de las condiciones identificadas, causas probables y consecuencias ocupacionales.",
+  "riskDetail": "Detalle del riesgo especÃ­fico segÃºn la GTC 45",
+  "description": "ExplicaciÃ³n profesional extendida de las condiciones identificadas, causas probables y consecuencias ocupacionales.",
   "deficiencyLevel": 10,  // (Indica si es: 10 para Muy Alto, 6 para Alto, 2 para Medio, 0 para Bajo)
-  "exposureLevel": 4,    // (Indica si es: 4 para Continua, 3 para Frecuente, 2 para Ocasional, 1 para Esporádica)
+  "exposureLevel": 4,    // (Indica si es: 4 para Continua, 3 para Frecuente, 2 para Ocasional, 1 para EsporÃ¡dica)
   "consequenceLevel": 60, // (Indica si es: 100 para Mortal, 60 para Muy Grave, 25 para Grave, 10 para Leve)
-  "elimination": "Opción viable de eliminación del peligro si aplica (o dejar vacío)",
-  "substitution": "Opción viable de sustitución si aplica (o dejar vacío)",
-  "engineeringControls": "Medidas técnicas o de ingeniería requeridas en orden de prioridad",
-  "administrativeControls": "Controles administrativos, señalización, inducción o rotación requeridos",
-  "eppControls": "Equipos de protección personal (EPP) y elementos sugeridos",
-  "actionPlan": "Acción inmediata de control y plan de seguimiento sugerido para subsanar el hallazgo"
+  "elimination": "OpciÃ³n viable de eliminaciÃ³n del peligro si aplica (o dejar vacÃ­o)",
+  "substitution": "OpciÃ³n viable de sustituciÃ³n si aplica (o dejar vacÃ­o)",
+  "engineeringControls": "Medidas tÃ©cnicas o de ingenierÃ­a requeridas en orden de prioridad",
+  "administrativeControls": "Controles administrativos, seÃ±alizaciÃ³n, inducciÃ³n o rotaciÃ³n requeridos",
+  "eppControls": "Equipos de protecciÃ³n personal (EPP) y elementos sugeridos",
+  "actionPlan": "AcciÃ³n inmediata de control y plan de seguimiento sugerido para subsanar el hallazgo"
 }`;
 
   // Copy standard GTC 45 prompt to clipboard
@@ -458,16 +516,16 @@ Genera un formato de respuesta únicamente como un objeto JSON crudo en español
         parsedData = {
           riskFactor: getValue('Factor(?:\\s*de\\s*riesgo)?') || getValue('riskFactor'),
           riskDetail: getValue('Detalle(?:\\s*del\\s*riesgo)?') || getValue('riskDetail'),
-          description: getValue('descripci(?:o|ó)n') || getValue('description'),
+          description: getValue('descripci(?:o|Ã³)n') || getValue('description'),
           deficiencyLevel: getNumber('deficiencia') || getNumber('deficiencyLevel'),
-          exposureLevel: getNumber('exposici(?:o|ó)n') || getNumber('exposureLevel'),
+          exposureLevel: getNumber('exposici(?:o|Ã³)n') || getNumber('exposureLevel'),
           consequenceLevel: getNumber('consecuencia') || getNumber('consequenceLevel'),
-          elimination: getValue('eliminaci(?:o|ó)n') || getValue('elimination'),
-          substitution: getValue('sustituci(?:o|ó)n') || getValue('substitution'),
-          engineeringControls: getValue('controlesIngenieria') || getValue('ingenier(?:i|í)a') || getValue('engineeringControls'),
+          elimination: getValue('eliminaci(?:o|Ã³)n') || getValue('elimination'),
+          substitution: getValue('sustituci(?:o|Ã³)n') || getValue('substitution'),
+          engineeringControls: getValue('controlesIngenieria') || getValue('ingenier(?:i|Ã­)a') || getValue('engineeringControls'),
           administrativeControls: getValue('controlesAdministrativos') || getValue('administrativos') || getValue('administrativeControls'),
-          eppControls: getValue('epp') || getValue('eppControls') || getValue('protecci(?:o|ó)n\\s*personal'),
-          actionPlan: getValue('plan(?:\\s*de\\s*acci(?:o|ó)n)?') || getValue('actionPlan')
+          eppControls: getValue('epp') || getValue('eppControls') || getValue('protecci(?:o|Ã³)n\\s*personal'),
+          actionPlan: getValue('plan(?:\\s*de\\s*acci(?:o|Ã³)n)?') || getValue('actionPlan')
         };
       }
 
@@ -522,62 +580,58 @@ Genera un formato de respuesta únicamente como un objeto JSON crudo en español
 
       setExternalAIInput('');
       setIsAICopierOpen(false);
-      alert('¡Análisis de GTC 45 integrado con éxito! Por favor revise los campos calculados y complete su reporte.');
+      alert('Â¡AnÃ¡lisis de GTC 45 integrado con Ã©xito! Por favor revise los campos calculados y complete su reporte.');
 
     } catch (e: any) {
       console.error(e);
-      alert('No se pudo interpretar el resultado de la IA de manera automática. Intente copiar solo el bloque de llaves JSON { ... } o asigne los campos calculados manualmente.');
+      alert('No se pudo interpretar el resultado de la IA de manera automÃ¡tica. Intente copiar solo el bloque de llaves JSON { ... } o asigne los campos calculados manualmente.');
     }
   };
 
   // Professional XLS Export (GTC 45 Matriz de Riesgo Completa format!)
   const exportToExcelGTC45 = () => {
-    // Columns aligned with complete GTC 45 matrix standard in Colombian companies
-    const tableData = findings.map((f, i) => ({
-      'ID Hallazgo': f.id,
-      'Consecutivo': i + 1,
-      'Fecha Siniestro/Inspección': f.date,
-      'Nombre del Inspector': f.inspector,
-      'Ubicación / Área Geográfica': f.location,
-      'Descripción Detallada del Peligro': f.description,
-      'Peligro - Factor de Riesgo (GTC-45)': f.riskFactor,
-      'Peligro - Detalle Específico': f.riskDetail,
-      'Efectos Posibles en la Salud': f.technicalObservation,
-      'Nivel Deficiencia (ND)': f.deficiencyLevel,
-      'Nivel Exposición (NE)': f.exposureLevel,
-      'Nivel Probabilidad (NP)': f.probabilityLevel,
-      'Clasificación Probabilidad': f.probabilityLabel,
-      'Nivel Consecuencias (NC)': f.consequenceLevel,
-      'Nivel de Riesgo (NR) e Intervención': f.riskLevelValue,
-      'Interpretación Nivel Riesgo (Tier)': f.riskTier,
-      'Aceptabilidad del Riesgo (GTC 45)': f.riskAcceptability,
-      'Eliminación': f.elimination || 'No aplica',
-      'Sustitución': f.substitution || 'No aplica',
-      'Controles de Ingeniería': f.engineeringControls || 'No aplica',
-      'Controles Administrativos / Señalización': f.administrativeControls || 'No aplica',
-      'Equipos o Elementos de Protección': f.eppControls || 'No aplica',
-      'Plan de Acción Sostenible': f.actionPlan,
-      'Estado Actual': f.status
-    }));
+  const tableData = findings.map((f, i) => ({
+    'No.': i + 1,
+    'ID': f.id,
+    'Fecha': f.date,
+    'Inspector': f.inspector,
+    'Ubicación': f.location,
+    'Observación Técnica': f.technicalObservation,
+    'Factor de Riesgo': f.riskFactor,
+    'Detalle del Riesgo': f.riskDetail,
+    'Descripción': f.description,
+    'ND': f.deficiencyLevel,
+    'NE': f.exposureLevel,
+    'NP': f.probabilityLevel,
+    'Probabilidad': f.probabilityLabel,
+    'NC': f.consequenceLevel,
+    'NR': f.riskLevelValue,
+    'Tier': f.riskTier,
+    'Aceptabilidad': f.riskAcceptability,
+    'Eliminación': f.elimination || 'No aplica',
+    'Sustitución': f.substitution || 'No aplica',
+    'Ingeniería': f.engineeringControls || 'No aplica',
+    'Administrativos': f.administrativeControls || 'No aplica',
+    'EPP': f.eppControls || 'No aplica',
+    'Plan de Acción': f.actionPlan,
+    'Estado': f.status
+  }));
 
-    const ws = XLSX.utils.json_to_sheet(tableData);
+  const ws = XLSX.utils.json_to_sheet(tableData);
+  
+  ws['!cols'] = [
+    { wch: 6 }, { wch: 12 }, { wch: 12 }, { wch: 20 }, { wch: 25 },
+    { wch: 45 }, { wch: 20 }, { wch: 25 }, { wch: 40 }, { wch: 8 },
+    { wch: 8 }, { wch: 8 }, { wch: 15 }, { wch: 8 }, { wch: 10 },
+    { wch: 6 }, { wch: 25 }, { wch: 25 }, { wch: 25 }, { wch: 30 },
+    { wch: 30 }, { wch: 25 }, { wch: 35 }, { wch: 12 }
+  ];
 
-    // Setup beautiful column widths
-    const colWidths = [
-      { wch: 12 }, { wch: 12 }, { wch: 25 }, { wch: 25 }, { wch: 28 }, 
-      { wch: 45 }, { wch: 25 }, { wch: 25 }, { wch: 45 }, { wch: 22 }, 
-      { wch: 20 }, { wch: 22 }, { wch: 22 }, { wch: 22 }, { wch: 32 }, 
-      { wch: 30 }, { wch: 35 }, { wch: 25 }, { wch: 25 }, { wch: 35 }, 
-      { wch: 40 }, { wch: 35 }, { wch: 40 }, { wch: 15 }
-    ];
-    ws['!cols'] = colWidths;
-
-    const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, "Matriz SST GTC 45");
-
-    // Generate output file
-    XLSX.writeFile(wb, `Matriz_SST_GTC45_Inspeccion_${new Date().toISOString().split('T')[0]}.xlsx`);
-  };
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, "Matriz_Riesgos_GTC45");
+  XLSX.writeFile(wb, `Matriz_SST_GTC45_${new Date().toISOString().split('T')[0]}.xlsx`);
+  
+  alert(`✅ Exportados ${findings.length} hallazgos correctamente.`);;
 
   // Helper calculation for Stats Dashboard
   const stats = {
@@ -613,7 +667,7 @@ Genera un formato de respuesta únicamente como un objeto JSON crudo en español
             </div>
             <div>
               <h1 className="font-bold text-lg tracking-tight leading-none">Matriz de Riesgos SST</h1>
-              <span className="text-xs text-indigo-200">Inspecciones de Campo Integradas • GTC 45 Colombia</span>
+              <span className="text-xs text-indigo-200">Inspecciones de Campo Integradas â€¢ GTC 45 Colombia</span>
             </div>
           </div>
           
@@ -646,15 +700,15 @@ Genera un formato de respuesta únicamente como un objeto JSON crudo en español
           {/* Welcome Dashboard Panel */}
           <div className="md:col-span-4 lg:col-span-2 bg-gradient-to-br from-indigo-800 to-indigo-950 text-white p-6 rounded-2xl shadow-lg border border-indigo-950 flex flex-col justify-between">
             <div className="space-y-2">
-              <span className="text-[10px] uppercase font-bold tracking-widest text-indigo-300">Gestión de Riesgos de Trabajo</span>
+              <span className="text-[10px] uppercase font-bold tracking-widest text-indigo-300">GestiÃ³n de Riesgos de Trabajo</span>
               <h2 className="text-2xl font-black">Portal Especializado SST</h2>
               <p className="text-sm text-indigo-100 font-light leading-relaxed">
-                Herramienta ágil para la clasificación, cálculo e intervención inmediata de peligros laborales bajo la <strong>GTC 45 de Colombia</strong>. Use la asistencia de IA externa para potenciar sus análisis rápidos de hallazgos.
+                Herramienta Ã¡gil para la clasificaciÃ³n, cÃ¡lculo e intervenciÃ³n inmediata de peligros laborales bajo la <strong>GTC 45 de Colombia</strong>. Use la asistencia de IA externa para potenciar sus anÃ¡lisis rÃ¡pidos de hallazgos.
               </p>
             </div>
             <div className="pt-4 border-t border-indigo-700/50 mt-4 flex items-center justify-between">
               <div>
-                <p className="text-xs text-indigo-300">Avance Total de Mitigación</p>
+                <p className="text-xs text-indigo-300">Avance Total de MitigaciÃ³n</p>
                 <p className="text-sm font-bold">{percentCerrados}% de Peligros Resueltos</p>
               </div>
               <div className="w-24 bg-indigo-950 h-2.5 rounded-full overflow-hidden">
@@ -683,7 +737,7 @@ Genera un formato de respuesta únicamente como un objeto JSON crudo en español
           {/* Micro Card Critical */}
           <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm hover:shadow transition flex flex-col justify-between">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-semibold uppercase tracking-wider text-rose-500">Críticos &amp; Muy Altos</span>
+              <span className="text-xs font-semibold uppercase tracking-wider text-rose-500">CrÃ­ticos &amp; Muy Altos</span>
               <div className="p-2 bg-rose-50 text-rose-600 rounded-lg">
                 <AlertTriangle className="w-5 h-5" />
               </div>
@@ -727,7 +781,7 @@ Genera un formato de respuesta únicamente como un objeto JSON crudo en español
                 type="text"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                placeholder="Buscar hallazgos por ubicación, observador, peligros o descripción técnica GTC 45..."
+                placeholder="Buscar hallazgos por ubicaciÃ³n, observador, peligros o descripciÃ³n tÃ©cnica GTC 45..."
                 className="w-full pl-10 pr-4 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-slate-50/50"
               />
             </div>
@@ -770,7 +824,7 @@ Genera un formato de respuesta únicamente como un objeto JSON crudo en español
                 className="px-3 py-1.5 border border-slate-200 rounded-md text-xs focus:ring-1 focus:ring-indigo-500 bg-white"
               >
                 <option value="Todos">Niveles de Riesgo: Todos</option>
-                <option value="I">Nivel I (Catastrófico / Rojo)</option>
+                <option value="I">Nivel I (CatastrÃ³fico / Rojo)</option>
                 <option value="II">Nivel II (Alto / Naranja)</option>
                 <option value="III">Nivel III (Aceptable / Amarillo)</option>
                 <option value="IV">Nivel IV (Bajo / Verde)</option>
@@ -819,7 +873,7 @@ Genera un formato de respuesta únicamente como un objeto JSON crudo en español
                 <div>
                   <h4 className="font-bold text-slate-700">No se encontraron hallazgos</h4>
                   <p className="text-sm text-slate-400 max-w-md mx-auto mt-1">
-                    Intente modificando los filtros superiores o registre un nuevo hallazgo SST haciendo clic en el botón superior derecho.
+                    Intente modificando los filtros superiores o registre un nuevo hallazgo SST haciendo clic en el botÃ³n superior derecho.
                   </p>
                 </div>
                 <button
@@ -921,7 +975,7 @@ Genera un formato de respuesta únicamente como un objeto JSON crudo en español
                           <div className="rounded-xl overflow-hidden max-h-48 shadow-inner border border-slate-100 bg-slate-50 relative group">
                             <img 
                               src={f.imageUrl} 
-                              alt="Evidencia técnica SST" 
+                              alt="Evidencia tÃ©cnica SST" 
                               className="w-full h-48 object-cover object-center group-hover:scale-101 transition duration-500"
                             />
                             <div className="absolute top-3 left-3 bg-slate-900/40 text-white px-2 py-1 rounded text-[10px] backdrop-blur">
@@ -932,7 +986,7 @@ Genera un formato de respuesta únicamente como un objeto JSON crudo en español
 
                         {/* Deep description of core danger */}
                         <div className="space-y-1.5">
-                          <span className="text-[10px] uppercase font-bold tracking-widest text-slate-400">Descripción del Hallazgo</span>
+                          <span className="text-[10px] uppercase font-bold tracking-widest text-slate-400">DescripciÃ³n del Hallazgo</span>
                           <p className="text-sm text-slate-600 leading-relaxed font-light">{f.description}</p>
                         </div>
 
@@ -943,7 +997,7 @@ Genera un formato de respuesta únicamente como un objeto JSON crudo en español
                             <span className="text-sm font-black text-slate-700">{f.deficiencyLevel}</span>
                           </div>
                           <div>
-                            <span className="text-[9px] uppercase text-slate-400 font-bold block">Exposición (NE)</span>
+                            <span className="text-[9px] uppercase text-slate-400 font-bold block">ExposiciÃ³n (NE)</span>
                             <span className="text-sm font-black text-slate-700">{f.exposureLevel}</span>
                           </div>
                           <div>
@@ -958,14 +1012,14 @@ Genera un formato de respuesta únicamente como un objeto JSON crudo en español
 
                         {/* Controls & Action plan block */}
                         <div className="space-y-3 pt-3 border-t border-slate-150">
-                          <span className="text-[10px] uppercase font-bold tracking-widest text-slate-400 block">Medidas de Intervención Priorizadas</span>
+                          <span className="text-[10px] uppercase font-bold tracking-widest text-slate-400 block">Medidas de IntervenciÃ³n Priorizadas</span>
                           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs text-slate-600">
                             
                             {/* Hierarchy Controls indicators */}
                             <div className="space-y-2">
                               {f.engineeringControls && (
                                 <div className="flex items-start space-x-2">
-                                  <span className="bg-indigo-50 text-indigo-700 font-extrabold px-1.5 py-0.5 rounded text-[9px] uppercase shrink-0 mt-0.5">Ingeniería</span>
+                                  <span className="bg-indigo-50 text-indigo-700 font-extrabold px-1.5 py-0.5 rounded text-[9px] uppercase shrink-0 mt-0.5">IngenierÃ­a</span>
                                   <p className="leading-tight font-light">{f.engineeringControls}</p>
                                 </div>
                               )}
@@ -982,14 +1036,14 @@ Genera un formato de respuesta únicamente como un objeto JSON crudo en español
                                 </div>
                               )}
                               {(!f.engineeringControls && !f.administrativeControls && !f.eppControls) && (
-                                <p className="text-slate-400 italic">No se especificaron controles de ingeniería o EPP.</p>
+                                <p className="text-slate-400 italic">No se especificaron controles de ingenierÃ­a o EPP.</p>
                               )}
                             </div>
 
-                            {/* Plan de Acción */}
+                            {/* Plan de AcciÃ³n */}
                             <div className="bg-indigo-50/45 p-3 rounded-xl border border-indigo-100 flex flex-col justify-between">
                               <div className="space-y-1">
-                                <span className="text-[9px] uppercase tracking-wider font-extrabold text-indigo-900 block">Plan de Acción Sugerido</span>
+                                <span className="text-[9px] uppercase tracking-wider font-extrabold text-indigo-900 block">Plan de AcciÃ³n Sugerido</span>
                                 <p className="text-slate-700 leading-snug font-medium italic">"{f.actionPlan}"</p>
                               </div>
                             </div>
@@ -1037,16 +1091,16 @@ Genera un formato de respuesta únicamente como un objeto JSON crudo en español
                 <h4 className="font-bold text-slate-800 text-sm">Asistente Generador GTC 45</h4>
               </div>
               <p className="text-xs text-slate-500 leading-relaxed font-light">
-                ¿No está seguro de cómo categorizar el factor de riesgo específico, los niveles de deficiencia de la GTC 45 o las medidas de ingeniería idóneas? Use la IA externa para sugerir todo de forma automática.
+                Â¿No estÃ¡ seguro de cÃ³mo categorizar el factor de riesgo especÃ­fico, los niveles de deficiencia de la GTC 45 o las medidas de ingenierÃ­a idÃ³neas? Use la IA externa para sugerir todo de forma automÃ¡tica.
               </p>
 
               {/* Fast Observation box inside side panel */}
               <div className="space-y-2">
-                <label className="text-xs font-semibold text-slate-600 block">Observación Rápida del Hallazgo:</label>
+                <label className="text-xs font-semibold text-slate-600 block">ObservaciÃ³n RÃ¡pida del Hallazgo:</label>
                 <textarea
                   value={technicalObservation}
                   onChange={(e) => setTechnicalObservation(e.target.value)}
-                  placeholder="Ej: Trabajadores realizando maniobras en la fachada del piso 3 sin arnés de seguridad ni línea de vida...."
+                  placeholder="Ej: Trabajadores realizando maniobras en la fachada del piso 3 sin arnÃ©s de seguridad ni lÃ­nea de vida...."
                   rows={4}
                   className="w-full p-3 border border-slate-200 bg-slate-50 text-xs rounded-lg focus:outline-none focus:ring-1 focus:ring-indigo-500"
                 ></textarea>
@@ -1062,7 +1116,7 @@ Genera un formato de respuesta únicamente como un objeto JSON crudo en español
                   <span>Obtener Prompt GTC-45</span>
                 </button>
                 <p className="text-[10px] text-slate-400 text-center font-light">
-                  Genera la plantilla JSON estructurada que interpretará el sistema.
+                  Genera la plantilla JSON estructurada que interpretarÃ¡ el sistema.
                 </p>
               </div>
             </div>
@@ -1071,7 +1125,7 @@ Genera un formato de respuesta únicamente como un objeto JSON crudo en español
             <div className="bg-white p-6 rounded-2xl border border-slate-200/80 shadow rounded-2xl space-y-4">
               <div className="flex items-center space-x-2 text-slate-700">
                 <BookOpen className="w-4.5 h-4.5 text-indigo-600" />
-                <h4 className="font-bold text-slate-800 text-sm">Guía de Parámetros GTC 45</h4>
+                <h4 className="font-bold text-slate-800 text-sm">GuÃ­a de ParÃ¡metros GTC 45</h4>
               </div>
 
               <div className="space-y-3.5 text-xs">
@@ -1093,14 +1147,14 @@ Genera un formato de respuesta únicamente como un objeto JSON crudo en español
                 {/* NE Section */}
                 <div className="space-y-1">
                   <div className="flex items-center justify-between text-[11px] font-bold text-slate-700">
-                    <span>Nivel de Exposición (NE)</span>
+                    <span>Nivel de ExposiciÃ³n (NE)</span>
                     <span className="text-indigo-600 font-semibold">Valor</span>
                   </div>
                   <div className="space-y-1 text-[11px] text-slate-500 bg-slate-50 p-2 rounded-lg border border-slate-100">
                     <div className="flex justify-between"><span>Continua (Toda la jornada)</span><span className="font-bold">4</span></div>
-                    <div className="flex justify-between"><span>Frecuente (Varias veces al día)</span><span className="font-bold">3</span></div>
-                    <div className="flex justify-between"><span>Ocasional (Alguna vez al día)</span><span className="font-bold">2</span></div>
-                    <div className="flex justify-between"><span>Esporádica (Alguna vez al mes)</span><span className="font-bold">1</span></div>
+                    <div className="flex justify-between"><span>Frecuente (Varias veces al dÃ­a)</span><span className="font-bold">3</span></div>
+                    <div className="flex justify-between"><span>Ocasional (Alguna vez al dÃ­a)</span><span className="font-bold">2</span></div>
+                    <div className="flex justify-between"><span>EsporÃ¡dica (Alguna vez al mes)</span><span className="font-bold">1</span></div>
                   </div>
                 </div>
 
@@ -1111,7 +1165,7 @@ Genera un formato de respuesta únicamente como un objeto JSON crudo en español
                     <span className="text-indigo-600 font-semibold">Valor</span>
                   </div>
                   <div className="space-y-1 text-[11px] text-slate-500 bg-slate-50 p-2 rounded-lg border border-slate-100">
-                    <div className="flex justify-between"><span>Mortal o Catastrófico</span><span className="font-bold">100</span></div>
+                    <div className="flex justify-between"><span>Mortal o CatastrÃ³fico</span><span className="font-bold">100</span></div>
                     <div className="flex justify-between"><span>Muy Grave (Invalidez permanente)</span><span className="font-bold">60</span></div>
                     <div className="flex justify-between"><span>Grave (Invalidez temporal)</span><span className="font-bold">25</span></div>
                     <div className="flex justify-between"><span>Leve (Lesiones leves)</span><span className="font-bold">10</span></div>
@@ -1123,8 +1177,8 @@ Genera un formato de respuesta únicamente como un objeto JSON crudo en español
 
             {/* General App Footer inside column */}
             <div className="text-center space-y-1 text-slate-400 p-2">
-              <p className="text-[10px]">Portal SST GTC-45 • Colombia</p>
-              <p className="text-[9px] font-light">Versión Profesional Segura sin Cookies y con almacenamiento persistente local en el navegador.</p>
+              <p className="text-[10px]">Portal SST GTC-45 â€¢ Colombia</p>
+              <p className="text-[9px] font-light">VersiÃ³n Profesional Segura sin Cookies y con almacenamiento persistente local en el navegador.</p>
             </div>
 
           </div>
@@ -1148,7 +1202,7 @@ Genera un formato de respuesta únicamente como un objeto JSON crudo en español
                   <h3 className="font-bold text-slate-800 text-base">
                     {editingFinding ? 'Editar Hallazgo SST GTC 45' : 'Registrar Nuevo Hallazgo SST'}
                   </h3>
-                  <p className="text-[11px] text-slate-400">Guía Técnica Colombiana GTC 45 para valoración de riesgos</p>
+                  <p className="text-[11px] text-slate-400">GuÃ­a TÃ©cnica Colombiana GTC 45 para valoraciÃ³n de riesgos</p>
                 </div>
               </div>
               <button 
@@ -1156,7 +1210,7 @@ Genera un formato de respuesta únicamente como un objeto JSON crudo en español
                 onClick={() => setIsFormOpen(false)}
                 className="p-1.5 text-slate-400 hover:text-slate-600 rounded-md hover:bg-slate-50 transition"
               >
-                ✕
+                âœ•
               </button>
             </div>
 
@@ -1190,7 +1244,7 @@ Genera un formato de respuesta únicamente como un objeto JSON crudo en español
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-xs font-bold text-slate-600">Ubicación / Área Geográfica:</label>
+                  <label className="text-xs font-bold text-slate-600">UbicaciÃ³n / Ãrea GeogrÃ¡fica:</label>
                   <input
                     type="text"
                     value={location}
@@ -1209,14 +1263,14 @@ Genera un formato de respuesta únicamente como un objeto JSON crudo en español
                 {/* Observation */}
                 <div className="md:col-span-2 space-y-2">
                   <div className="flex items-center justify-between">
-                    <label className="text-xs font-bold text-slate-600">Observación técnica detallada del inspector:</label>
+                    <label className="text-xs font-bold text-slate-600">ObservaciÃ³n tÃ©cnica detallada del inspector:</label>
                     <button
                       type="button"
                       onClick={() => setIsAICopierOpen(true)}
                       className="text-indigo-600 hover:text-indigo-800 text-[11px] font-bold flex items-center space-x-1"
                     >
                       <Sparkles className="w-3.5 h-3.5 text-indigo-500" />
-                      <span>¿Autocompletar con IA Externa?</span>
+                      <span>Â¿Autocompletar con IA Externa?</span>
                     </button>
                   </div>
                   <textarea
@@ -1224,14 +1278,14 @@ Genera un formato de respuesta únicamente como un objeto JSON crudo en español
                     onChange={(e) => setTechnicalObservation(e.target.value)}
                     required
                     rows={4}
-                    placeholder="Ej. Tablero eléctrico general sin cerradura ni señalización de riesgo. Cables de alimentación primaria expuestos e indicios de sulfatación en bornes cerca de fuente de humedad constante."
+                    placeholder="Ej. Tablero elÃ©ctrico general sin cerradura ni seÃ±alizaciÃ³n de riesgo. Cables de alimentaciÃ³n primaria expuestos e indicios de sulfataciÃ³n en bornes cerca de fuente de humedad constante."
                     className="w-full p-3 text-xs border border-slate-200 rounded-lg bg-slate-50/20 focus:outline-none focus:ring-1 focus:ring-indigo-500"
                   ></textarea>
                 </div>
 
                 {/* Evidence Image Loader */}
                 <div className="space-y-2">
-                  <label className="text-xs font-bold text-slate-600 block">Fotografía / Evidencia Visual:</label>
+                  <label className="text-xs font-bold text-slate-600 block">FotografÃ­a / Evidencia Visual:</label>
                   
                   {imageUrl ? (
                     <div className="relative rounded-lg overflow-hidden border border-slate-200 h-32 bg-slate-50">
@@ -1250,7 +1304,7 @@ Genera un formato de respuesta únicamente como un objeto JSON crudo en español
                       className="h-32 border-2 border-dashed border-slate-200 hover:border-indigo-400 rounded-lg flex flex-col items-center justify-center cursor-pointer bg-slate-50/50 hover:bg-slate-50 transition"
                     >
                       <span className="text-xs text-slate-400 font-medium">Haga clic para cargar foto (.png, .jpg)</span>
-                      <span className="text-[10px] text-slate-400">Dimensión sugerida: Horizontal</span>
+                      <span className="text-[10px] text-slate-400">DimensiÃ³n sugerida: Horizontal</span>
                       <input 
                         type="file" 
                         ref={fileInputRef} 
@@ -1266,7 +1320,7 @@ Genera un formato de respuesta únicamente como un objeto JSON crudo en español
 
               {/* Danger Classification Group */}
               <div className="bg-slate-50 p-4 rounded-xl border border-slate-200/80 space-y-4">
-                <span className="text-xs font-black uppercase text-indigo-900 block tracking-wider">Clasificación Básica del Peligro</span>
+                <span className="text-xs font-black uppercase text-indigo-900 block tracking-wider">ClasificaciÃ³n BÃ¡sica del Peligro</span>
                 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="space-y-1">
@@ -1283,7 +1337,7 @@ Genera un formato de respuesta únicamente como un objeto JSON crudo en español
                   </div>
 
                   <div className="space-y-1">
-                    <label className="text-xs font-bold text-slate-600">Detalle Específico del Riesgo:</label>
+                    <label className="text-xs font-bold text-slate-600">Detalle EspecÃ­fico del Riesgo:</label>
                     <select
                       value={riskDetail}
                       onChange={(e) => setRiskDetail(e.target.value)}
@@ -1297,11 +1351,11 @@ Genera un formato de respuesta únicamente como un objeto JSON crudo en español
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-xs font-bold text-slate-600">Descripción Extendida (Sintetizada):</label>
+                  <label className="text-xs font-bold text-slate-600">DescripciÃ³n Extendida (Sintetizada):</label>
                   <textarea
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
-                    placeholder="Sintetice el peligro o use la descripción general."
+                    placeholder="Sintetice el peligro o use la descripciÃ³n general."
                     className="w-full p-2 text-xs border border-slate-200 rounded-lg bg-white focus:outline-none focus:ring-1 focus:ring-indigo-500"
                     rows={2}
                   ></textarea>
@@ -1313,7 +1367,7 @@ Genera un formato de respuesta únicamente como un objeto JSON crudo en español
                 
                 {/* Manual Inputs dropdown */}
                 <div className="space-y-4">
-                  <span className="text-xs font-black uppercase text-indigo-950 block tracking-wider">Metodología de Valoración GTC 45</span>
+                  <span className="text-xs font-black uppercase text-indigo-950 block tracking-wider">MetodologÃ­a de ValoraciÃ³n GTC 45</span>
                   
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                     
@@ -1334,7 +1388,7 @@ Genera un formato de respuesta únicamente como un objeto JSON crudo en español
 
                     {/* Exposure Dropdown */}
                     <div className="space-y-1">
-                      <label className="text-xs font-bold text-slate-600 block">NE - Exposición:</label>
+                      <label className="text-xs font-bold text-slate-600 block">NE - ExposiciÃ³n:</label>
                       <select
                         value={exposureLevel}
                         onChange={(e) => setExposureLevel(parseInt(e.target.value, 10))}
@@ -1343,7 +1397,7 @@ Genera un formato de respuesta únicamente como un objeto JSON crudo en español
                         <option value={4}>4 (Continua)</option>
                         <option value={3}>3 (Frecuente)</option>
                         <option value={2}>2 (Ocasional)</option>
-                        <option value={1}>1 (Esporádica)</option>
+                        <option value={1}>1 (EsporÃ¡dica)</option>
                       </select>
                     </div>
 
@@ -1367,7 +1421,7 @@ Genera un formato de respuesta únicamente como un objeto JSON crudo en español
 
                 {/* Math output indicators */}
                 <div className="border-t md:border-t-0 md:border-l border-indigo-100 pt-4 md:pt-0 md:pl-6 flex flex-col justify-between">
-                  <span className="text-xs font-black uppercase text-indigo-950 block tracking-wider">Cálculos Matemáticos de la Guía</span>
+                  <span className="text-xs font-black uppercase text-indigo-950 block tracking-wider">CÃ¡lculos MatemÃ¡ticos de la GuÃ­a</span>
                   
                   <div className="grid grid-cols-2 gap-4 my-2">
                     <div className="bg-white p-2.5 rounded-lg border border-indigo-50 shadow-xs">
@@ -1377,7 +1431,7 @@ Genera un formato de respuesta únicamente como un objeto JSON crudo en español
                     </div>
 
                     <div className="bg-white p-2.5 rounded-lg border border-indigo-50 shadow-xs">
-                      <span className="text-[10px] uppercase text-slate-400 font-bold block">Nivel Exposición de Riesgo (NR)</span>
+                      <span className="text-[10px] uppercase text-slate-400 font-bold block">Nivel ExposiciÃ³n de Riesgo (NR)</span>
                       <span className="text-base font-black text-indigo-900">{calculatedRisk}</span>
                       <span className="text-[9px] block text-slate-500">Tier: {calculatedTier}</span>
                     </div>
@@ -1406,11 +1460,11 @@ Genera un formato de respuesta únicamente como un objeto JSON crudo en español
 
               {/* Hierarchy Intervention controls */}
               <div className="space-y-4">
-                <span className="text-xs font-black uppercase text-slate-800 block tracking-wider">Determinación de Medidas de Control sugeridas (SST)</span>
+                <span className="text-xs font-black uppercase text-slate-800 block tracking-wider">DeterminaciÃ³n de Medidas de Control sugeridas (SST)</span>
                 
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                   <div className="space-y-1">
-                    <label className="text-xs font-bold text-slate-600">Eliminación:</label>
+                    <label className="text-xs font-bold text-slate-600">EliminaciÃ³n:</label>
                     <input
                       type="text"
                       value={elimination}
@@ -1421,7 +1475,7 @@ Genera un formato de respuesta únicamente como un objeto JSON crudo en español
                   </div>
 
                   <div className="space-y-1">
-                    <label className="text-xs font-bold text-slate-600">Sustitución:</label>
+                    <label className="text-xs font-bold text-slate-600">SustituciÃ³n:</label>
                     <input
                       type="text"
                       value={substitution}
@@ -1432,12 +1486,12 @@ Genera un formato de respuesta únicamente como un objeto JSON crudo en español
                   </div>
 
                   <div className="space-y-1">
-                    <label className="text-xs font-bold text-slate-600">Controles de Ingeniería:</label>
+                    <label className="text-xs font-bold text-slate-600">Controles de IngenierÃ­a:</label>
                     <input
                       type="text"
                       value={engineeringControls}
                       onChange={(e) => setEngineeringControls(e.target.value)}
-                      placeholder="e.g. Guardas de piezas mecánicas en movimiento."
+                      placeholder="e.g. Guardas de piezas mecÃ¡nicas en movimiento."
                       className="w-full p-2 text-xs border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-indigo-500"
                     />
                   </div>
@@ -1445,23 +1499,23 @@ Genera un formato de respuesta únicamente como un objeto JSON crudo en español
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="space-y-1">
-                    <label className="text-xs font-bold text-slate-600">Controles Administrativos / Señalización:</label>
+                    <label className="text-xs font-bold text-slate-600">Controles Administrativos / SeÃ±alizaciÃ³n:</label>
                     <input
                       type="text"
                       value={administrativeControls}
                       onChange={(e) => setAdministrativeControls(e.target.value)}
-                      placeholder="e.g. Señaléctica, inducción sst, rutinas de inspección."
+                      placeholder="e.g. SeÃ±alÃ©ctica, inducciÃ³n sst, rutinas de inspecciÃ³n."
                       className="w-full p-2 text-xs border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-indigo-500"
                     />
                   </div>
 
                   <div className="space-y-1">
-                    <label className="text-xs font-bold text-slate-600">EPP y Colectivos de Protección general:</label>
+                    <label className="text-xs font-bold text-slate-600">EPP y Colectivos de ProtecciÃ³n general:</label>
                     <input
                       type="text"
                       value={eppControls}
                       onChange={(e) => setEppControls(e.target.value)}
-                      placeholder="e.g. Casco de seguridad dialéctrica marcas homologadas, protectores tipo copa."
+                      placeholder="e.g. Casco de seguridad dialÃ©ctrica marcas homologadas, protectores tipo copa."
                       className="w-full p-2 text-xs border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-indigo-500"
                     />
                   </div>
@@ -1469,13 +1523,13 @@ Genera un formato de respuesta únicamente como un objeto JSON crudo en español
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
                   <div className="space-y-1">
-                    <label className="text-xs font-bold text-indigo-900">Plan de Acción &amp; Seguimiento Sugerido:</label>
+                    <label className="text-xs font-bold text-indigo-900">Plan de AcciÃ³n &amp; Seguimiento Sugerido:</label>
                     <input
                       type="text"
                       value={actionPlan}
                       onChange={(e) => setActionPlan(e.target.value)}
                       required
-                      placeholder="e.g. Reorganizar de inmediato, cotizar sonometría..."
+                      placeholder="e.g. Reorganizar de inmediato, cotizar sonometrÃ­a..."
                       className="w-full p-2 bg-indigo-50/30 border border-indigo-150 rounded-lg text-xs font-semibold focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:bg-white"
                     />
                   </div>
@@ -1538,7 +1592,7 @@ Genera un formato de respuesta únicamente como un objeto JSON crudo en español
                 onClick={() => setIsAICopierOpen(false)}
                 className="text-white bg-indigo-900/40 hover:bg-indigo-900/80 px-2 py-1 rounded"
               >
-                ✕
+                âœ•
               </button>
             </div>
 
@@ -1547,20 +1601,20 @@ Genera un formato de respuesta únicamente como un objeto JSON crudo en español
               
               <div className="text-xs text-slate-600 space-y-2">
                 <p>
-                  Debido a limitaciones de alojamiento estático o si no cuenta con una API key directa, puede utilizar este asistente para que cualquier IA en la web realice la estructuración de la GTC 45 por usted en 2 clics:
+                  Debido a limitaciones de alojamiento estÃ¡tico o si no cuenta con una API key directa, puede utilizar este asistente para que cualquier IA en la web realice la estructuraciÃ³n de la GTC 45 por usted en 2 clics:
                 </p>
                 
                 <ol className="list-decimal pl-5 space-y-1 text-slate-500">
-                  <li>Haga clic en <strong>"Copiar Prompt para la IA"</strong> para llevarse las instrucciones metodológicas.</li>
+                  <li>Haga clic en <strong>"Copiar Prompt para la IA"</strong> para llevarse las instrucciones metodolÃ³gicas.</li>
                   <li>Vaya a <a href="https://chatgpt.com" target="_blank" rel="noreferrer" className="text-indigo-600 hover:underline inline-flex items-center space-x-0.5"><span>ChatGPT</span><ExternalLink className="w-2.5 h-2.5" /></a> o <a href="https://gemini.google.com" target="_blank" rel="noreferrer" className="text-indigo-600 hover:underline inline-flex items-center space-x-0.5"><span>Gemini</span><ExternalLink className="w-2.5 h-2.5" /></a> y pegue las instrucciones.</li>
-                  <li>Copie toda la respuesta que la IA genere y <strong>péguela en el cuadro inferior</strong>.</li>
+                  <li>Copie toda la respuesta que la IA genere y <strong>pÃ©guela en el cuadro inferior</strong>.</li>
                 </ol>
               </div>
 
               {/* Box 1: Pre-Generated Prompt Output */}
               <div className="space-y-1.5">
                 <div className="flex items-center justify-between">
-                  <label className="text-xs font-bold text-slate-600">1. Prompt metodológico GTC-45 configurado:</label>
+                  <label className="text-xs font-bold text-slate-600">1. Prompt metodolÃ³gico GTC-45 configurado:</label>
                   <button
                     type="button"
                     onClick={handleCopyAIPrompt}
@@ -1569,7 +1623,7 @@ Genera un formato de respuesta únicamente como un objeto JSON crudo en español
                     {copiedPromptStatus ? (
                       <>
                         <Check className="w-3.5 h-3.5 text-emerald-600" />
-                        <span className="text-emerald-700">¡Copiado al portapapeles!</span>
+                        <span className="text-emerald-700">Â¡Copiado al portapapeles!</span>
                       </>
                     ) : (
                       <>
@@ -1590,7 +1644,7 @@ Genera un formato de respuesta únicamente como un objeto JSON crudo en español
                 <textarea
                   value={externalAIInput}
                   onChange={(e) => setExternalAIInput(e.target.value)}
-                  placeholder={`Pegue aquí el bloque {...} resultante o todo el escrito. El sistema lo interpretará de inmediato para rellenar los controles y clasificaciones...`}
+                  placeholder={`Pegue aquÃ­ el bloque {...} resultante o todo el escrito. El sistema lo interpretarÃ¡ de inmediato para rellenar los controles y clasificaciones...`}
                   rows={6}
                   className="w-full p-3 font-mono text-[10.5px] border border-slate-200 bg-slate-50 rounded-lg focus:outline-none focus:ring-1 focus:ring-indigo-500"
                 ></textarea>
@@ -1600,7 +1654,7 @@ Genera un formato de respuesta únicamente como un objeto JSON crudo en español
 
             {/* Bottom operations */}
             <div className="px-6 py-4 bg-slate-50 border-t border-slate-150 flex items-center justify-between">
-              <span className="text-[10px] text-slate-400 font-medium">Asociación GTC 45 con Inteligencia Ocupacional</span>
+              <span className="text-[10px] text-slate-400 font-medium">AsociaciÃ³n GTC 45 con Inteligencia Ocupacional</span>
               <div className="flex space-x-2">
                 <button
                   type="button"
@@ -1614,7 +1668,7 @@ Genera un formato de respuesta únicamente como un objeto JSON crudo en español
                   onClick={handleApplyExternalAI}
                   className="px-4.5 py-2 bg-indigo-600 hover:bg-indigo-500 rounded-lg text-xs font-bold text-white shadow"
                 >
-                  Aplicar análisis de IA importado
+                  Aplicar anÃ¡lisis de IA importado
                 </button>
               </div>
             </div>
@@ -1626,3 +1680,6 @@ Genera un formato de respuesta únicamente como un objeto JSON crudo en español
     </div>
   );
 }
+
+
+
